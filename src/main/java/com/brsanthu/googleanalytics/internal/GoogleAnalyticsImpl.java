@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+import com.brsanthu.googleanalytics.request.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,29 +31,17 @@ import com.brsanthu.googleanalytics.httpclient.HttpBatchRequest;
 import com.brsanthu.googleanalytics.httpclient.HttpClient;
 import com.brsanthu.googleanalytics.httpclient.HttpRequest;
 import com.brsanthu.googleanalytics.httpclient.HttpResponse;
-import com.brsanthu.googleanalytics.request.DefaultRequest;
-import com.brsanthu.googleanalytics.request.EventHit;
-import com.brsanthu.googleanalytics.request.ExceptionHit;
-import com.brsanthu.googleanalytics.request.GoogleAnalyticsParameter;
-import com.brsanthu.googleanalytics.request.GoogleAnalyticsRequest;
-import com.brsanthu.googleanalytics.request.GoogleAnalyticsResponse;
-import com.brsanthu.googleanalytics.request.ItemHit;
-import com.brsanthu.googleanalytics.request.PageViewHit;
-import com.brsanthu.googleanalytics.request.ScreenViewHit;
-import com.brsanthu.googleanalytics.request.SocialHit;
-import com.brsanthu.googleanalytics.request.TimingHit;
-import com.brsanthu.googleanalytics.request.TransactionHit;
 
 /**
  * This is the main class of this library that accepts the requests from clients and sends the events to Google
  * Analytics (GA).
- *
+ * <p>
  * Clients needs to instantiate this object with {@link GoogleAnalyticsConfig} and {@link DefaultRequest}. Configuration
  * contains sensible defaults so one could just initialize using one of the convenience constructors.
- *
+ * <p>
  * This object is ThreadSafe and it is intended that clients create one instance of this for each GA Tracker Id and
  * reuse each time an event needs to be posted.
- *
+ * <p>
  * This object contains resources which needs to be shutdown/disposed. So {@link #close()} method is called to release
  * all resources. Once close method is called, this instance cannot be reused so create new instance if required.
  */
@@ -313,6 +302,11 @@ public class GoogleAnalyticsImpl implements GoogleAnalytics, GoogleAnalyticsExec
     @Override
     public EventHit event() {
         return (EventHit) new EventHit().setExecutor(this);
+    }
+
+    @Override
+    public MeasuringRefunds refundEvent() {
+        return (MeasuringRefunds) new MeasuringRefunds().setExecutor(this);
     }
 
     @Override
